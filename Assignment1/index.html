@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Assignment 1
+        </title>
+        <link rel="stylesheet" type="text/css" href="index.css" media="screen"/>
+    </head>
+    <body>
+
+        <h1>Assignment 1 - Random Calculations</h1>
+
+        <a id="calculations"></a>
+        <input id='input'/>
+        
+        <script>
+
+            var result = undefined;
+            var field = createCalc();
+
+            function createCalc(){
+                var p = document.createElement('p');
+
+                const firstRandom = Math.floor(Math.random() * 100);
+                const secondRandom = Math.floor(Math.random() * 100);
+                const operation = Math.floor(Math.random() * 4);
+
+                switch(operation) {
+                    case 0: result = firstRandom + secondRandom;
+                    p.innerHTML = firstRandom.toString() + ' + ' + secondRandom.toString() + ' = '; break;
+                    case 1: result = firstRandom - secondRandom;
+                    p.innerHTML = firstRandom.toString() + ' - ' + secondRandom.toString() + ' = '; break;
+                    case 2: result = firstRandom * secondRandom; 
+                    p.innerHTML = firstRandom.toString() + ' * ' + secondRandom.toString() + ' = '; break;
+                    case 3: result = firstRandom / secondRandom;
+                    p.innerHTML = firstRandom.toString() + ' / ' + secondRandom.toString() + ' = '; break;
+                }
+
+                document.getElementById("calculations").appendChild(p);
+                return p;
+            }
+
+            var inputResult = document.getElementById('input');
+            inputResult.addEventListener("keydown", function (e) {
+                if(e.keyCode === 13){
+                    validateCalc();
+                }
+            })
+        
+            function validateCalc() {
+                field.append(inputResult.value);
+                if(inputResult.value == result){
+                    field.style.color = 'LimeGreen'
+                } else {
+                    field.style.color = 'red'
+                }
+                document.getElementById('calculations').appendChild(document.createElement('br'));
+                field = createCalc();
+                inputResult.value = '';
+            }
+                
+        </script>
+    </body>
+
+</html>
