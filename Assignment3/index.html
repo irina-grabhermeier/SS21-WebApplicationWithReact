@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Message board</title>
@@ -20,16 +20,29 @@
             Add new message
         </span>
         <span class="navbar-brand" style="color: white;" id="messagesSpan" onclick="onMessagesContainerClick()">
-            Messages
+            Messages <span id="amountMessagesNavigation" style="color: red;"></span>
         </span>
     </nav>
 
     <div id="addMessageContainer">
-        <p>add message</p>
+        <form id="messageForm">
+            <div class="form-group">
+                <label for="headerInput">Header</label>
+                <input name="headerInput" class="form-control" id="headerInput">
+            </div>
+            <div class="form-group">
+                <label for="bodyInput">Body</label>
+                <input name="bodyInput" class="form-control" id="bodyInput">
+            </div>
+            <button id="submitButton" class="btn btn-secondary" type="submit">Send</button>
+        </form>
+
     </div>
 
     <div id="messagesContainer">
         <p>your messsage</p>
+        <ul class="list-group" id="listOfMessages">
+        </ul>
     </div>
 
 </body>
