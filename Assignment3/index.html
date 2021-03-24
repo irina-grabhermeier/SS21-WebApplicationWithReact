@@ -6,11 +6,6 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" defer src="./index.js"></script>
 </head>
 
@@ -20,19 +15,20 @@
             Add new message
         </span>
         <span class="navbar-brand" style="color: white;" id="messagesSpan" onclick="onMessagesContainerClick()">
-            Messages <span id="amountMessagesNavigation" style="color: red;"></span>
+            Messages <span id="amountMessagesNavigation">(0 new)</span>
         </span>
     </nav>
 
     <div id="addMessageContainer">
+        <h2>Send a message</h2>
         <form id="messageForm">
             <div class="form-group">
                 <label for="headerInput">Header</label>
-                <input name="headerInput" class="form-control" id="headerInput">
+                <input name="headerInput" class="form-control" id="headerInput" required>
             </div>
             <div class="form-group">
                 <label for="bodyInput">Body</label>
-                <input name="bodyInput" class="form-control" id="bodyInput">
+                <input name="bodyInput" class="form-control" id="bodyInput" required>
             </div>
             <button id="submitButton" class="btn btn-secondary" type="submit">Send</button>
         </form>
@@ -40,7 +36,8 @@
     </div>
 
     <div id="messagesContainer">
-        <p>your messsage</p>
+        <h2>Messages</h2>
+        <p id="amountUnreadMessagesParagraph" style="color: red;"></p>
         <ul class="list-group" id="listOfMessages">
         </ul>
     </div>

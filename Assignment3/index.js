@@ -1,10 +1,15 @@
 
 const addMessageContainer = document.getElementById('addMessageContainer');
 const messagesContainer = document.getElementById('messagesContainer');
+const listOfMessages = document.getElementById('listOfMessages'); //ul
+const addMessageForm = document.getElementById('messageForm');
+const amountMessagesNavigation = document.getElementById('amountMessagesNavigation');
+const amountUnreadMessagesParagraph = document.getElementById('amountUnreadMessagesParagraph');
 
 messagesContainer.style.display = 'none';
 
 function onAddMessageContainerClick() {
+    addMessageForm.reset();
     messagesContainer.style.display = 'none';
     addMessageContainer.style.display = 'block';
 }
@@ -12,59 +17,84 @@ function onAddMessageContainerClick() {
 function onMessagesContainerClick() {
     addMessageContainer.style.display = 'none';
     messagesContainer.style.display = 'block';
+    showMessages();
 
 }
 
 const allMessages = [];
 
-
-const addMessageForm = document.getElementById('messageForm');
-
-
 addMessageForm.addEventListener('submit', function (event) {
+    event.preventDefault();
     const formData = new FormData(addMessageForm);
 
     const headerInput = formData.get('headerInput');
     const bodyInput = formData.get('bodyInput');
 
-    if ((headerInput !== '' && headerInput !== undefined) || (bodyInput !== '' && bodyInput !== undefined)) {
+    const message = new Message(headerInput, bodyInput, true);
 
-        const message = new Message(headerInput, bodyInput, true);
+    allMessages.push(message);
+    updateDisplayingUnreadMessages();
 
-        allMessages.push(message);
-        console.log(message);
+    addMessageForm.reset();
 
-        addMessageForm.reset();
-
-    }
 });
 
-function messagesLoaded() {
-    const listOfMessages = document.getElementById('listOfMessages');
+function showMessages() {
 
+    listOfMessages.innerHTML = '';
 
-    unreadMessages.forEach(m => {
+    allMessages.forEach(m => {
+        const ht = document.createElement('p');
+        const bt = document.createElement('p');
+        const listItem = document.createElement('li');
 
+        ht.style.fontWeight = 'bold';
+
+        listItem.className = 'list-group-item';
+
+        ht.innerHTML = m.headerText;
+        bt.innerHTML = m.bodyText;
+
+        listItem.appendChild(ht);
+        listItem.appendChild(bt);
+
+        if (m.isUnread) {
+            listItem.style.backgroundColor = 'lightblue';
+        } else {
+            listItem.style.backgroundColor = 'wheat';
+        }
+
+        listItem.addEventListener('dblclick', function () {
+            m.isUnread = false;
+            listItem.style.backgroundColor = 'wheat';
+            updateDisplayingUnreadMessages();
+        });
+
+        listOfMessages.appendChild(listItem);
     });
 
-    const headerText = document.createElement('p');
-    const bodyText = document.createElement('p');
+}
 
-    headerText.innerText = message.headerInput;
-    bodyText.innerText = message.bodyInput;
+function updateDisplayingUnreadMessages() {
 
-    headerText.style.fontWeight = 'bold';
+    let unreadMessages = 0;
+    allMessages.forEach(m => {
+        if (m.isUnread) {
+            unreadMessages++;
+        }
+    });
 
-    const listItem = document.createElement('li');
-    listItem.appendChild(headerText);
-    listItem.appendChild(bodyText);
+    if (unreadMessages <= 5) {
+        amountMessagesNavigation.innerHTML = `(${unreadMessages} new)`;
+    } else {
+        amountMessagesNavigation.innerHTML = '(5+ new)';
+    }
 
-    listItem.style.backgroundColor = 'light-blue';
-    listItem.classList.add('list-group-item');
-
-    console.log(message);
-
-    listOfMessages.appendChild(listItem);
+    if (unreadMessages > 0) {
+        amountUnreadMessagesParagraph.innerHTML = `(You have ${unreadMessages} new messages!)`;
+    } else {
+        amountUnreadMessagesParagraph.innerHTML = '';
+    }
 }
 
 class Message {
