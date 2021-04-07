@@ -2,6 +2,10 @@ import React, {useState} from 'react';
 import Message from './message';
 import styled from 'styled-components';
 
+const ListItem = styled.li`
+background-color: ${(props: {isUnread: boolean}) => props.isUnread ? "lightblue" : "wheat"};
+margin: 5pt;`
+
 export default function Messages(props : {allMessages: Array<Message>, onUpdate : () => void}) {
 
     const [unreadMessages, setUnreadMessages] = useState(props.allMessages.filter(msg => msg.isUnread).length);
@@ -11,10 +15,6 @@ export default function Messages(props : {allMessages: Array<Message>, onUpdate 
         setUnreadMessages(props.allMessages.filter(msg => msg.isUnread).length);
         props.onUpdate();
     }
-
-    const ListItem = styled.li`
-    background-color: ${(props: {isUnread: boolean}) => props.isUnread ? "lightblue" : "wheat"};
-    margin: 5pt;`
     
     return(
         <div id="messagesContainer">

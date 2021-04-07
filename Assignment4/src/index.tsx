@@ -3,6 +3,19 @@ import ReactDOM from "react-dom";
 import MessageForm from './components/messageForm';
 import Messages from './components/messages';
 import Message from './components/message';
+import { ThemeProvider } from "styled-components";
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import styled from 'styled-components';
+
+const themes = {
+  light:{
+    backgroundColor: "white"
+  },
+  dark:{
+    backgroundColor: "black"
+  }
+}
 
 const App = () => {
 
@@ -32,6 +45,10 @@ const App = () => {
     setUnreadMessagesCount(allMessages.filter(msg => msg.isUnread).length);
   }
 
+  const handleSwitch = (event) => {
+    
+  };
+
   return (
     <div>
       <nav className="navbar navbar-dark bg-primary">
@@ -42,6 +59,15 @@ const App = () => {
               Messages ({(unreadMessagesCount > 5) ? '5+' : unreadMessagesCount} new)
           </span>
       </nav>
+      <FormControlLabel
+        control={
+          <Switch
+            onChange={handleSwitch}
+            color="primary"
+          />
+        }
+        label="Dark Theme"
+      />
       {display && <MessageForm onAddMessage={onAddMessage}/>}
       {!display && <Messages allMessages={allMessages} onUpdate={onMessageRead} />}
     </div>
