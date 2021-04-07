@@ -1,28 +1,32 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import MessageForm from './components/messageForm';
 import Messages from './components/messages';
 import Message from './components/message';
-import { ThemeProvider } from "styled-components";
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import styled from 'styled-components';
+import { ThemeProvider } from "styled-components";
+import { LightTheme, DarkTheme } from "./components/themes";
+import { createGlobalStyle } from "styled-components"
 
-const themes = {
-  light:{
-    backgroundColor: "white"
-  },
-  dark:{
-    backgroundColor: "black"
-  }
+export const GlobalStyles = createGlobalStyle`
+body {
+  background: ${({ theme }) => theme.body};
+  color: ${({ theme }) => theme.text};
+  font-family: Tahoma, Helvetica, Arial, Roboto, sans-serif;
+  transition: all 0.50s linear;
 }
+div {
+background:  ${({ theme }) => theme.background};
+}
+  `
 
 const App = () => {
 
   const [allMessages] = useState(new Array<Message>());
   const [display, setDisplay] = useState(false);
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(allMessages.filter(msg => msg.isUnread).length);
-
+  const [theme, setTheme] = useState(LightTheme);
 
   const onShowAddMessages = () => {
     setDisplay(true);
@@ -32,7 +36,7 @@ const App = () => {
     setDisplay(false);
   }
 
-  const onAddMessage = (headerText:string, bodyText:string) => {
+  const onAddMessage = (headerText: string, bodyText: string) => {
 
     const newMsg = new Message(headerText, bodyText, true);
 
@@ -46,31 +50,34 @@ const App = () => {
   }
 
   const handleSwitch = (event) => {
-    
+    (theme === LightTheme) ? setTheme(DarkTheme) : setTheme(LightTheme);
   };
 
   return (
-    <div>
-      <nav className="navbar navbar-dark bg-primary">
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <div style={{ padding: 10 }}>
+        <nav className="navbar navbar-dark bg-primary">
           <span className="navbar-brand" id="addMessagesSpan" onClick={onShowAddMessages}>
-              Add new message
-          </span>
+            Add new message
+            </span>
           <span className="navbar-brand" id="messagesSpan" onClick={onShowMessages}>
-              Messages ({(unreadMessagesCount > 5) ? '5+' : unreadMessagesCount} new)
-          </span>
-      </nav>
-      <FormControlLabel
-        control={
-          <Switch
-            onChange={handleSwitch}
-            color="primary"
-          />
-        }
-        label="Dark Theme"
-      />
-      {display && <MessageForm onAddMessage={onAddMessage}/>}
-      {!display && <Messages allMessages={allMessages} onUpdate={onMessageRead} />}
-    </div>
+            Messages ({(unreadMessagesCount > 5) ? '5+' : unreadMessagesCount} new)
+            </span>
+        </nav>
+        <FormControlLabel
+          control={
+            <Switch
+              onChange={handleSwitch}
+              color="primary"
+            />
+          }
+          label="Dark Theme"
+        />
+        {display && <MessageForm onAddMessage={onAddMessage} />}
+        {!display && <Messages allMessages={allMessages} onUpdate={onMessageRead} />}
+      </div>
+    </ThemeProvider>
   );
 }
 
