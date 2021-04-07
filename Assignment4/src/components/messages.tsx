@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import Message from './message';
+import styled from 'styled-components';
 
 export default function Messages(props : {allMessages: Array<Message>, onUpdate : () => void}) {
 
@@ -10,6 +11,10 @@ export default function Messages(props : {allMessages: Array<Message>, onUpdate 
         setUnreadMessages(props.allMessages.filter(msg => msg.isUnread).length);
         props.onUpdate();
     }
+
+    const ListItem = styled.li`
+    background-color: ${(props: {isUnread: boolean}) => props.isUnread ? "lightblue" : "wheat"};
+    margin: 5pt;`
     
     return(
         <div id="messagesContainer">
@@ -18,11 +23,11 @@ export default function Messages(props : {allMessages: Array<Message>, onUpdate 
 
             <ul className="list-group" id="listOfMessages">
 
-                {props.allMessages.map(msg => <li key={msg.uuid} className='list-group-item' style={{ backgroundColor: (msg.isUnread) ? "lightblue" : "wheat"}}
+                {props.allMessages.map(msg => <ListItem key={msg.uuid} isUnread={msg.isUnread}
                     onDoubleClick={(event)=>{ event.preventDefault; onMessageClicked(msg)}}> 
                     <p style={{fontWeight: "bold"}}>{msg.headerText}</p>
                     <p>{msg.bodyText}</p>
-                </li>)}
+                </ListItem>)}
 
             </ul>
         </div>
