@@ -46,6 +46,16 @@ class GameLogic {
                 this.nextCard = this.deckOfCards.pop();
                 return true;
             }
+        } else if (guess === 'equal') {
+            if (this.currentCard?.number === this.nextCard?.number) {
+                // right guess
+                this.currentCard = this.nextCard;
+                if (this.currentCard !== undefined) {
+                    this.usedCards.push(this.currentCard);
+                }
+                this.nextCard = this.deckOfCards.pop();
+                return true;
+            }
         }
         // wrong guess
         this.currentCard = this.nextCard;
