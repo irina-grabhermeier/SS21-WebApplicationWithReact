@@ -1,17 +1,11 @@
 import React from 'react';
 import Game from './components/game';
-import GameLogic from './components/gameLogic';
+import './App.css'
 
 function App() {
 
-  const gameLogic = new GameLogic();
-
-  const handleStartButton = () => {
-
-  }
-
   return (
-    <div className="App">
+    <div className='App'>
       <Game />
     </div>
   );

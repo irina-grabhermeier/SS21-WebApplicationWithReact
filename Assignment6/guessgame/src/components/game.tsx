@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import GameDiv from '../GameDiv';
+import Button from './button';
+import CardDiv from './cardDiv';
+import CardSpan from './cardSpan';
 import GameLogic from './gameLogic';
 
 export default function Game() {
@@ -75,18 +79,28 @@ export default function Game() {
     }
 
     return (
-        <div>
-            {!gameStarted && <button onClick={startGame}>Start</button>}
+
+        <GameDiv>
+            {!gameStarted && <Button onClick={startGame}>Start</Button>}
             {gameStarted && <div>
 
-                <img src={imageSource()} height='200' width='200' /><span>{showCardValue(currentCard !== undefined ? currentCard.number : 0)}</span>
-                {console.log(gameLogic.currentCard)}{console.log(gameLogic.isDeckEmpty())}
-                <button onClick={guessOfHigher} disabled={gameLogic.isDeckEmpty()}>Higher</button>
-                <button onClick={guessOfLower} disabled={gameLogic.isDeckEmpty()}>Lower</button>
-                <button onClick={guessOfEqual} disabled={gameLogic.isDeckEmpty()}>Equal</button>
-                <button onClick={reset} >Reset</button>
-                <span>Score: {score}</span>
+                <CardDiv>
+                    <CardSpan isLeft={true} suit={currentCard?.suit}
+                        content={currentCard !== undefined ? currentCard.number.toString() : ''} />
+                    <img src={imageSource()} height='200' width='200' />
+
+                    <CardSpan isLeft={false} suit={currentCard?.suit}
+                        content={currentCard !== undefined ? currentCard.number.toString() : ''} />
+                </CardDiv>
+
+                <Button onClick={guessOfHigher} disabled={gameLogic.isDeckEmpty()}>Higher</Button>
+                <Button onClick={guessOfLower} disabled={gameLogic.isDeckEmpty()}>Lower</Button>
+                <Button onClick={guessOfEqual} disabled={gameLogic.isDeckEmpty()}>Equal</Button>
+                <Button onClick={reset} >Reset</Button>
+                <br />
+                <span style={{ fontWeight: 'bold', fontSize: 24, color: 'indigo' }}>Score: {score}</span>
             </div>}
-        </div >
+        </GameDiv >
+
     );
 }
