@@ -1,61 +1,22 @@
-import React, { useState } from 'react';
 import GameDiv from '../GameDiv';
 import Button from './button';
 import CardDiv from './cardDiv';
 import CardSpan from './cardSpan';
 import GameLogic from './gameLogic';
+import { observer } from "mobx-react";
+import { autorun } from 'mobx';
 
-export default function Game() {
+const gameLogic = new GameLogic();
 
-    const [gameLogic, setGameLogic] = useState(new GameLogic());
-    const [gameStarted, setGameStarted] = useState(false);
-    const [score, setScore] = useState(0);
-    const [currentCard, setCurrentCard] = useState(gameLogic.currentCard);
+autorun(() => {
+    console.log(gameLogic.currentCard);
+    console.log(gameLogic.score);
+});
 
-
-    const startGame = () => {
-        setGameStarted(true);
-    }
-
-    const guessOfHigher = () => {
-        const isHigher = gameLogic.guess('higher');
-
-        if (isHigher) {
-            const newScore = score + 1;
-            setScore(newScore);
-        }
-        setCurrentCard(gameLogic.currentCard);
-    }
-
-    const guessOfLower = () => {
-        const isLower = gameLogic.guess('lower');
-        if (isLower) {
-            const newScore = score + 1;
-            setScore(newScore);
-        }
-        setCurrentCard(gameLogic.currentCard);
-    }
-
-    const guessOfEqual = () => {
-        const isEqual = gameLogic.guess('equal');
-        if (isEqual) {
-            const newScore = score + 1;
-            setScore(newScore);
-        }
-        setCurrentCard(gameLogic.currentCard);
-    }
-
-    const reset = () => {
-        const newGameLogic = new GameLogic();
-        setGameLogic(newGameLogic);
-        setGameStarted(false);
-        setScore(0);
-        setCurrentCard(newGameLogic.currentCard)
-    }
-
+const Game = () => {
 
     const imageSource = (): string => {
-        switch (currentCard?.suit) {
+        switch (gameLogic.currentCard?.suit) {
             case 'Clubs':
                 return '/Card_club.svg.png';
             case 'Diamonds':
@@ -81,26 +42,23 @@ export default function Game() {
     return (
 
         <GameDiv>
-            {!gameStarted && <Button onClick={startGame}>Start</Button>}
-            {gameStarted && <div>
+            <CardDiv>
+                <CardSpan isLeft={true} suit={gameLogic.currentCard?.suit}
+                    content={gameLogic.currentCard !== undefined ? showCardValue(gameLogic.currentCard.number) : ''} />
+                <img src={imageSource()} height='200' width='200' />
 
-                <CardDiv>
-                    <CardSpan isLeft={true} suit={currentCard?.suit}
-                        content={currentCard !== undefined ? currentCard.number.toString() : ''} />
-                    <img src={imageSource()} height='200' width='200' />
+                <CardSpan isLeft={false} suit={gameLogic.currentCard?.suit}
+                    content={gameLogic.currentCard !== undefined ? showCardValue(gameLogic.currentCard.number) : ''} />
+            </CardDiv>
 
-                    <CardSpan isLeft={false} suit={currentCard?.suit}
-                        content={currentCard !== undefined ? currentCard.number.toString() : ''} />
-                </CardDiv>
-
-                <Button onClick={guessOfHigher} disabled={gameLogic.isDeckEmpty()}>Higher</Button>
-                <Button onClick={guessOfLower} disabled={gameLogic.isDeckEmpty()}>Lower</Button>
-                <Button onClick={guessOfEqual} disabled={gameLogic.isDeckEmpty()}>Equal</Button>
-                <Button onClick={reset} >Reset</Button>
-                <br />
-                <span style={{ fontWeight: 'bold', fontSize: 24, color: 'indigo' }}>Score: {score}</span>
-            </div>}
+            <Button onClick={() => gameLogic.guess('higher')} disabled={gameLogic.isDeckEmpty}>Higher</Button>
+            <Button onClick={() => gameLogic.guess('lower')} disabled={gameLogic.isDeckEmpty}>Lower</Button>
+            <Button onClick={() => gameLogic.guess('equal')} disabled={gameLogic.isDeckEmpty}>Equal</Button>
+            <br />
+            <span style={{ fontWeight: 'bold', fontSize: 24, color: 'indigo' }}>Score: {gameLogic.score}</span>
         </GameDiv >
 
     );
 }
+
+export default observer(Game);

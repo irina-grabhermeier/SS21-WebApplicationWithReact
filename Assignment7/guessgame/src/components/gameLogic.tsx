@@ -1,73 +1,90 @@
-import React from 'react';
+import { action, makeAutoObservable } from 'mobx';
 import Card from './card';
 import DeckOfCards from './deckOfCards';
 
-class GameLogic {
+export type GuessType = 'higher' | 'lower' | 'equal';
 
-    currentCard: Card | undefined;
-    nextCard: Card | undefined;
-    usedCards = new Array<Card>();
+export class GameLogic {
+
+    private _currentCard: Card | undefined;
+    private _nextCard: Card | undefined;
+    private _usedCards = new Array<Card>();
+    private _score: number;
+    private _isDeckEmpty: boolean;
 
 
     private deckOfCards = new DeckOfCards();
 
     constructor() {
-        this.currentCard = this.deckOfCards.pop();
-        this.nextCard = this.deckOfCards.pop();
-        if (this.currentCard !== undefined) {
-            this.usedCards.push(this.currentCard);
+        this._currentCard = this.deckOfCards.pop();
+        this._nextCard = this.deckOfCards.pop();
+        if (this._currentCard !== undefined) {
+            this._usedCards.push(this._currentCard);
         }
+        this._score = 0;
+        this._isDeckEmpty = this.deckOfCards.isDeckEmpty();
+        makeAutoObservable(this);
     }
 
-    guess(guess: string): boolean | undefined {
 
-        if (this.nextCard === undefined || this.currentCard === undefined) {
+    public guess(guess: GuessType): void {
+
+        if (this._nextCard === undefined || this._currentCard === undefined) {
             // game is over cause no next card.
-            return undefined;
+            return;
         }
 
         if (guess === 'higher') {
-            if (this.currentCard?.number < this.nextCard?.number) {
+            if (this._currentCard?.number < this._nextCard?.number) {
                 // right guess
-                this.currentCard = this.nextCard;
-                if (this.currentCard !== undefined) {
-                    this.usedCards.push(this.currentCard);
+                this._currentCard = this._nextCard;
+                if (this._currentCard !== undefined) {
+                    this._usedCards.push(this._currentCard);
                 }
-                this.nextCard = this.deckOfCards.pop();
-                return true;
+                this._nextCard = this.deckOfCards.pop();
+                this._score += 1;
             }
         } else if (guess === 'lower') {
-            if (this.currentCard?.number > this.nextCard?.number) {
+            if (this._currentCard?.number > this._nextCard?.number) {
                 // right guess
-                this.currentCard = this.nextCard;
-                if (this.currentCard !== undefined) {
-                    this.usedCards.push(this.currentCard);
+                this._currentCard = this._nextCard;
+                if (this._currentCard !== undefined) {
+                    this._usedCards.push(this._currentCard);
                 }
-                this.nextCard = this.deckOfCards.pop();
-                return true;
+                this._nextCard = this.deckOfCards.pop();
+                this._score += 1;
             }
         } else if (guess === 'equal') {
-            if (this.currentCard?.number === this.nextCard?.number) {
+            if (this._currentCard?.number === this._nextCard?.number) {
                 // right guess
-                this.currentCard = this.nextCard;
-                if (this.currentCard !== undefined) {
-                    this.usedCards.push(this.currentCard);
+                this._currentCard = this._nextCard;
+                if (this._currentCard !== undefined) {
+                    this._usedCards.push(this._currentCard);
                 }
-                this.nextCard = this.deckOfCards.pop();
-                return true;
+                this._nextCard = this.deckOfCards.pop();
+                this._score += 1;
             }
         }
         // wrong guess
-        this.currentCard = this.nextCard;
-        if (this.currentCard !== undefined) {
-            this.usedCards.push(this.currentCard);
+        this._currentCard = this._nextCard;
+        if (this._currentCard !== undefined) {
+            this._usedCards.push(this._currentCard);
         }
-        this.nextCard = this.deckOfCards.pop();
-        return false;
+
+        this._nextCard = this.deckOfCards.pop();
+        this._isDeckEmpty = this.deckOfCards.isDeckEmpty();
     }
 
-    isDeckEmpty(): boolean {
-        return this.deckOfCards.isDeckEmpty();
+    public get isDeckEmpty(): boolean {
+        return this._isDeckEmpty;
+    }
+
+    public get score(): number {
+        return this._score;
+    }
+
+    public get currentCard(): Card | undefined {
+        return this._currentCard;
     }
 
 }
