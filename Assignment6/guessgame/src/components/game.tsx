@@ -4,19 +4,14 @@ import Button from './button';
 import CardDiv from './cardDiv';
 import CardSpan from './cardSpan';
 import GameLogic from './gameLogic';
-import { observer } from "mobx-react";
-import { autorun } from 'mobx';
 
-const Game = () => {
+export default function Game() {
 
-    const gameLogic = new GameLogic();
+    const [gameLogic, setGameLogic] = useState(new GameLogic());
     const [gameStarted, setGameStarted] = useState(false);
+    const [score, setScore] = useState(0);
+    const [currentCard, setCurrentCard] = useState(gameLogic.currentCard);
 
-
-    autorun(() => {
-        console.log(gameLogic.currentCard);
-        console.log(gameLogic.score);
-    })
 
     const startGame = () => {
         setGameStarted(true);
@@ -24,24 +19,43 @@ const Game = () => {
 
     const guessOfHigher = () => {
         const isHigher = gameLogic.guess('higher');
+
+        if (isHigher) {
+            const newScore = score + 1;
+            setScore(newScore);
+        }
+        setCurrentCard(gameLogic.currentCard);
     }
 
     const guessOfLower = () => {
         const isLower = gameLogic.guess('lower');
+        if (isLower) {
+            const newScore = score + 1;
+            setScore(newScore);
+        }
+        setCurrentCard(gameLogic.currentCard);
     }
 
     const guessOfEqual = () => {
         const isEqual = gameLogic.guess('equal');
+        if (isEqual) {
+            const newScore = score + 1;
+            setScore(newScore);
+        }
+        setCurrentCard(gameLogic.currentCard);
     }
 
     const reset = () => {
-        //gameLogic = new GameLogic();
+        const newGameLogic = new GameLogic();
+        setGameLogic(newGameLogic);
         setGameStarted(false);
+        setScore(0);
+        setCurrentCard(newGameLogic.currentCard)
     }
 
 
     const imageSource = (): string => {
-        switch (gameLogic.currentCard?.suit) {
+        switch (currentCard?.suit) {
             case 'Clubs':
                 return '/Card_club.svg.png';
             case 'Diamonds':
@@ -71,24 +85,22 @@ const Game = () => {
             {gameStarted && <div>
 
                 <CardDiv>
-                    <CardSpan isLeft={true} suit={gameLogic.currentCard?.suit}
-                        content={gameLogic.currentCard !== undefined ? gameLogic.currentCard.number.toString() : ''} />
+                    <CardSpan isLeft={true} suit={currentCard?.suit}
+                        content={currentCard !== undefined ? showCardValue(currentCard.number) : ''} />
                     <img src={imageSource()} height='200' width='200' />
 
-                    <CardSpan isLeft={false} suit={gameLogic.currentCard?.suit}
-                        content={gameLogic.currentCard !== undefined ? gameLogic.currentCard.number.toString() : ''} />
+                    <CardSpan isLeft={false} suit={currentCard?.suit}
+                        content={currentCard !== undefined ? showCardValue(currentCard.number) : ''} />
                 </CardDiv>
 
-                <Button onClick={() => gameLogic.guess('higher')} disabled={gameLogic.isDeckEmpty}>Higher</Button>
-                <Button onClick={() => gameLogic.guess('lower')} disabled={gameLogic.isDeckEmpty}>Lower</Button>
-                <Button onClick={() => gameLogic.guess('equal')} disabled={gameLogic.isDeckEmpty}>Equal</Button>
+                <Button onClick={guessOfHigher} disabled={gameLogic.isDeckEmpty()}>Higher</Button>
+                <Button onClick={guessOfLower} disabled={gameLogic.isDeckEmpty()}>Lower</Button>
+                <Button onClick={guessOfEqual} disabled={gameLogic.isDeckEmpty()}>Equal</Button>
                 <Button onClick={reset} >Reset</Button>
                 <br />
-                <span style={{ fontWeight: 'bold', fontSize: 24, color: 'indigo' }}>Score: {gameLogic.score}</span>
+                <span style={{ fontWeight: 'bold', fontSize: 24, color: 'indigo' }}>Score: {score}</span>
             </div>}
         </GameDiv >
 
     );
 }
-
-export default observer(Game);
