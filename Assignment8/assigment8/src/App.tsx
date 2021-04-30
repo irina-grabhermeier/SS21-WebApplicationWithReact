@@ -31,10 +31,10 @@ const StyledLi = styled.li`
 
 function App() {
 
-  function createStore(): Store {
+  const createStore = (): Store => {
     return new Store();
   }
-  
+
   const store = useLocalObservable(createStore);
 
   useEffect(() => {

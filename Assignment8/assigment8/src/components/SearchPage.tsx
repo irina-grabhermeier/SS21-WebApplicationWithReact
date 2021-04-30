@@ -8,8 +8,7 @@ const SearchPage = (props: { store: Store }) => {
     var searchTerm = '';
 
     const handleSubmit = () => {
-        console.log(searchTerm);
-        props.store.search('hi', 0);
+        props.store.search(searchTerm, 0);
     }
 
     const searchedGifs = (): any => {
@@ -19,13 +18,9 @@ const SearchPage = (props: { store: Store }) => {
     return (
         <div>
             <h1>Search for Gif</h1>
-            <form onSubmit={handleSubmit}>
-                <input type='text' id='input' onChange={(event) => { searchTerm = event.target.value }} />
-                <button type='submit'>search</button>
-            </form>
-            {handleSubmit}
+            <input type='text' id='input' onChange={(event) => { searchTerm = event.target.value }} />
+            <button onClick={handleSubmit}>search</button>
             <div>
-                {console.log('searched gifs', searchedGifs())}
                 {(searchedGifs().data !== undefined) ?
                     (searchedGifs().data.map((trendyGif: any) => <GiphyComponent gif={trendyGif} />))
                     : <br />

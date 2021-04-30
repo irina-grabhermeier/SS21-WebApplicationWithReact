@@ -1,6 +1,6 @@
 import React from 'react';
 import configData from "./../config.json";
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 
 export default class Store {
 
@@ -25,7 +25,8 @@ export default class Store {
             .catch((error) => console.error(error));
 
         if (res !== undefined) {
-            this._searchGifs = await res.json();
+            const gifsJson = await res.json();
+            this._searchGifs = gifsJson;
         } else {
             console.log(Error("Problem with loading searched gifs."));
         }
@@ -36,13 +37,19 @@ export default class Store {
             .catch((error) => console.error(error));
 
         if (res !== undefined) {
-            this._trendyGifs = await res.json();
+            const gifsJson = await res.json();
+            runInAction(() => {
+                this._trendyGifs = gifsJson;
+            })
+
         } else {
             console.log(Error("Problem with loading trendy gifs."));
         }
     }
 
     public destroy(): void {
-        //TODO
+        this._searchGifs = new Array<any>();
+        this._trendyGifs = new Array<any>();
+        this.loadTrendy(0);
     }
 }
