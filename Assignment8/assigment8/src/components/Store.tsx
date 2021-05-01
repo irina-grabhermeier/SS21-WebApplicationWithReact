@@ -26,7 +26,10 @@ export default class Store {
 
         if (res !== undefined) {
             const gifsJson = await res.json();
-            this._searchGifs = gifsJson;
+            runInAction(() => {
+                this._searchGifs = gifsJson;
+            })
+
         } else {
             console.log(Error("Problem with loading searched gifs."));
         }
