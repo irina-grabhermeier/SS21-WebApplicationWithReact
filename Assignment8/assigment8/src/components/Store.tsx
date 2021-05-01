@@ -1,4 +1,3 @@
-import React from 'react';
 import configData from "./../config.json";
 import { makeAutoObservable, runInAction } from 'mobx';
 

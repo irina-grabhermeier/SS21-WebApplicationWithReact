@@ -1,12 +1,13 @@
-import { observer, useLocalObservable } from "mobx-react-lite";
+import { observer, useAsObservableSource, useLocalObservable } from "mobx-react-lite";
 import GiphyComponent from './GiphyComponent';
 import Store from './Store';
 import PaginationData from './PaginationData';
 import Pagination from "./Pagination";
+import SearchTerm from "./SearchTerm";
 
 const SearchPage = (props: { store: Store }) => {
 
-    var _searchTerm = '';
+    const searchTerm = useLocalObservable(() => new SearchTerm());
 
     const createPaginationData = (): PaginationData => {
         return new PaginationData();
@@ -19,39 +20,34 @@ const SearchPage = (props: { store: Store }) => {
     }
 
     const handleSearch = () => {
-        props.store.search(_searchTerm, 0);
+        props.store.search(searchTerm.term, 0);
     }
 
     const prevFuncPagination = () => {
         paginationData.decreaseOffset();
-        console.log(paginationData.offset);
-        props.store.search(_searchTerm, paginationData.offset);
+        props.store.search(searchTerm.term, paginationData.offset);
     }
 
     const nextFuncPagination = () => {
         paginationData.increaseOffset();
-        console.log(paginationData.offset);
-        props.store.search(_searchTerm, paginationData.offset);
+        props.store.search(searchTerm.term, paginationData.offset);
     }
 
     const setPagePagination = (inputNumber: number) => {
         paginationData.setPage(inputNumber);
-        console.log(paginationData.offset);
-        props.store.search(_searchTerm, paginationData.offset);
+        props.store.search(searchTerm.term, paginationData.offset);
     }
-
 
     return (
         <div>
             <h1>Search for Gif</h1>
-            <input type='text' id='input' onChange={(event) => { _searchTerm = event.target.value }} />
+            <input type='text' id='input' onChange={(event) => { searchTerm.setTerm(event.target.value) }} />
             <button onClick={handleSearch}>search</button>
-            {console.log(searchedGifs())}
             <br />
             <div>
                 {(searchedGifs().data !== undefined) ?
                     (searchedGifs().data.map((trendyGif: any) => <GiphyComponent gif={trendyGif} />))
-                    : (searchedGifs().data === undefined && _searchTerm !== '') ?
+                    : (searchedGifs().data === undefined && searchTerm.term !== '') ?
                         <p>loading...</p>
                         : <br />
                 }

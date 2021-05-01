@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import SearchPage from './components/SearchPage';
-import { BrowserRouter as Router, Route, Link, Switch, RouteComponentProps, NavLink } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, NavLink } from "react-router-dom";
 import TrendyPage from './components/TrendyPage';
-import { observer, useLocalObservable, useObserver } from 'mobx-react';
+import { observer, useLocalObservable } from 'mobx-react';
 import Store from './components/Store';
 import { autorun } from 'mobx';
 import styled from 'styled-components';
@@ -43,7 +43,6 @@ function App() {
 
   const disposer = autorun(() => {
     // This method can be used to automatically send a request in a store when page changes.
-
     console.log(store.trendyGifs, store.searchGifs);
   })
 
