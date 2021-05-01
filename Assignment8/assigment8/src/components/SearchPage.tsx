@@ -1,4 +1,4 @@
-import { observer, useAsObservableSource, useLocalObservable } from "mobx-react-lite";
+import { observer, useLocalObservable } from "mobx-react-lite";
 import GiphyComponent from './GiphyComponent';
 import Store from './Store';
 import PaginationData from './PaginationData';
@@ -47,9 +47,7 @@ const SearchPage = (props: { store: Store }) => {
             <div>
                 {(searchedGifs().data !== undefined) ?
                     (searchedGifs().data.map((trendyGif: any) => <GiphyComponent gif={trendyGif} />))
-                    : (searchedGifs().data === undefined && searchTerm.term !== '') ?
-                        <p>loading...</p>
-                        : <br />
+                    : <br />
                 }
             </div>
             <div>

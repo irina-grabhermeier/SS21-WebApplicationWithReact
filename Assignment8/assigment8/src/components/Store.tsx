@@ -30,7 +30,7 @@ export default class Store {
             })
 
         } else {
-            console.log(Error("Problem with loading searched gifs."));
+            console.error(Error("Problem with loading searched gifs."));
         }
     }
 
@@ -45,7 +45,7 @@ export default class Store {
             })
 
         } else {
-            console.log(Error("Problem with loading trendy gifs."));
+            console.error(Error("Problem with loading trendy gifs."));
         }
     }
 
