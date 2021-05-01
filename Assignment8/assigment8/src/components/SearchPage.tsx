@@ -1,21 +1,45 @@
-import { observer } from 'mobx-react';
+import { observer, useLocalObservable } from "mobx-react-lite";
 import GiphyComponent from './GiphyComponent';
-import Pagination from './Pagination';
 import Store from './Store';
+import PaginationData from './PaginationData';
+import Pagination from "./Pagination";
 
 const SearchPage = (props: { store: Store }) => {
 
     var _searchTerm = '';
-    var _offset = 0;
-    const LIMIT = 25;
+
+    const createPaginationData = (): PaginationData => {
+        return new PaginationData();
+    }
+
+    const paginationData = useLocalObservable(createPaginationData);
+
+    const searchedGifs = (): any => {
+        return props.store.searchGifs;
+    }
 
     const handleSearch = () => {
         props.store.search(_searchTerm, 0);
     }
 
-    const searchedGifs = (): any => {
-        return props.store.searchGifs;
+    const prevFuncPagination = () => {
+        paginationData.decreaseOffset();
+        console.log(paginationData.offset);
+        props.store.search(_searchTerm, paginationData.offset);
     }
+
+    const nextFuncPagination = () => {
+        paginationData.increaseOffset();
+        console.log(paginationData.offset);
+        props.store.search(_searchTerm, paginationData.offset);
+    }
+
+    const setPagePagination = (inputNumber: number) => {
+        paginationData.setPage(inputNumber);
+        console.log(paginationData.offset);
+        props.store.search(_searchTerm, paginationData.offset);
+    }
+
 
     return (
         <div>
@@ -31,6 +55,15 @@ const SearchPage = (props: { store: Store }) => {
                         <p>loading...</p>
                         : <br />
                 }
+            </div>
+            <div>
+                <Pagination
+                    currentPage={paginationData.pageNumber}
+                    pageLimit={paginationData.pageLimit}
+                    prevFunc={prevFuncPagination}
+                    nextFunc={nextFuncPagination}
+                    inputOnChange={(num: number) => setPagePagination(num)}
+                />
             </div>
         </div>
     );

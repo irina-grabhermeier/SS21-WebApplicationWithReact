@@ -31,7 +31,7 @@ export default class PaginationData {
     }
 
     public increaseOffset() {
-        if (this._offset < this.PAGE_LIMIT) {
+        if (this._offset < this.PAGE_LIMIT * this.LIMIT) {
             this._offset = this._offset + this.LIMIT;
             this._pageNumber += 1;
         }

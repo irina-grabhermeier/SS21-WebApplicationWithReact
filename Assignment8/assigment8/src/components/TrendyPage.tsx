@@ -2,6 +2,7 @@ import { observer, useLocalObservable } from "mobx-react-lite";
 import GiphyComponent from './GiphyComponent';
 import Store from './Store';
 import PaginationData from './PaginationData';
+import Pagination from "./Pagination";
 
 const TrendyPage = (props: { store: Store }) => {
 
@@ -17,19 +18,16 @@ const TrendyPage = (props: { store: Store }) => {
 
     const prevFuncPagination = () => {
         paginationData.decreaseOffset();
-        console.log(paginationData.offset);
         props.store.loadTrendy(paginationData.offset);
     }
+
     const nextFuncPagination = () => {
         paginationData.increaseOffset();
-        console.log(paginationData.offset);
         props.store.loadTrendy(paginationData.offset);
     }
 
-    const setPage = (inputNumber: number) => {
-
+    const setPagePagination = (inputNumber: number) => {
         paginationData.setPage(inputNumber);
-        console.log(paginationData.offset);
         props.store.loadTrendy(paginationData.offset);
     }
 
@@ -44,14 +42,16 @@ const TrendyPage = (props: { store: Store }) => {
                 }
             </div>
             <div>
-                <button onClick={prevFuncPagination}>previous</button>
-                <input type='number' onChange={(event) => { setPage(parseInt(event.target.value)) }} value={paginationData.pageNumber} />
-                <span>of {paginationData.pageLimit}</span>
-                <button onClick={nextFuncPagination}>next</button>
+                <Pagination
+                    currentPage={paginationData.pageNumber}
+                    pageLimit={paginationData.pageLimit}
+                    prevFunc={prevFuncPagination}
+                    nextFunc={nextFuncPagination}
+                    inputOnChange={(num: number) => setPagePagination(num)}
+                />
             </div>
         </div>
     )
-
 }
 
 export default observer(TrendyPage);
