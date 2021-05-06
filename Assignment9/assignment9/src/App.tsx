@@ -4,7 +4,7 @@ import { HashRouter as Router, Route, Switch, NavLink } from "react-router-dom";
 import styled from 'styled-components';
 import Locale from './components/Locale';
 import Numbers from './components/Numbers';
-import Date from './components/Date';
+import DateCom from './components/Date';
 import Text from './components/Text';
 
 const StyledUl = styled.ul`
@@ -72,7 +72,7 @@ function App() {
               <Numbers locale={locale} />
             </Route>
             <Route path="/date">
-              <Date locale={locale} />
+              <DateCom locale={locale} />
             </Route>
             <Route path="/text">
               <Text locale={locale} />

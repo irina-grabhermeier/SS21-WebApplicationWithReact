@@ -1,15 +1,23 @@
+import React, { useState } from 'react';
+import { FormattedDate, IntlProvider } from 'react-intl';
 
 type Props = {
     locale: string;
 }
 
-const Date = ({ locale }: Props) => {
+const DateCom = ({ locale }: Props) => {
+
+    const [date, setDate] = useState(new Date())
     return (
-        <div>
-            <p>date</p>
-            <p>{locale}</p>
-        </div>
-    )
+        <IntlProvider locale={locale}>
+
+            <h2>Formatted Date</h2>
+            <input type='date' onChange={(event) => setDate(new Date(event.target.value))} />
+            <br />
+            <FormattedDate value={date} />
+
+        </IntlProvider>
+    );
 }
 
-export default Date;
+export default DateCom;
