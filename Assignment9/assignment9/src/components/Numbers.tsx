@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { FormattedNumber, IntlProvider } from 'react-intl';
 
 type Props = {
@@ -5,19 +6,24 @@ type Props = {
 }
 
 const Numbers = ({ locale }: Props) => {
+
+    const [currentValue, setcurrentValue] = useState(0);
+
     return (
         <IntlProvider locale={locale}>
-            <FormattedNumber value={1000.95} />
+            <input type='number' onChange={(event) => setcurrentValue(parseInt(event.target.value))} />
             <br />
-            <FormattedNumber style="unit" unit="kilobyte" value={1000.95} />
+            <FormattedNumber value={currentValue} />
             <br />
-            <FormattedNumber currency="EUR" style="currency" value={1000.95} />
+            <FormattedNumber style="unit" unit="kilobyte" value={currentValue} />
+            <br />
+            <FormattedNumber currency="EUR" style="currency" value={currentValue} />
             <br />
             <FormattedNumber
                 currency="EUR"
                 minimumFractionDigits={5}
                 style="currency"
-                value={1000.95}
+                value={currentValue}
             />
         </IntlProvider>
     );
