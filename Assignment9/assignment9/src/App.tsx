@@ -27,7 +27,6 @@ const StyledLi = styled.li`
     };
 `;
 
-
 function App() {
 
   const [locale, setLocale] = useState('de');
@@ -44,19 +43,19 @@ function App() {
           <nav>
             <StyledUl>
               <StyledLi>
-                <NavLink to='/numbers' activeStyle={{
+                <NavLink to={'/numbers'} activeStyle={{
                   fontWeight: 'bold',
                   background: 'pink', // red
                 }}>Numbers</NavLink>
               </StyledLi>
               <StyledLi>
-                <NavLink to='/date' activeStyle={{
+                <NavLink to={'/date'} activeStyle={{
                   fontWeight: 'bold',
                   background: 'pink', // red
                 }}>Date</NavLink>
               </StyledLi>
               <StyledLi>
-                <NavLink to='/text' activeStyle={{
+                <NavLink to={'/text'} activeStyle={{
                   fontWeight: 'bold',
                   background: 'pink', // red
                 }}>Text</NavLink>
@@ -68,13 +67,13 @@ function App() {
           </nav>
 
           <Switch>
-            <Route exact path="/numbers">
+            <Route path={'/numbers'}>
               <Numbers locale={locale} />
             </Route>
-            <Route path="/date">
+            <Route path={'/date'}>
               <DateCom locale={locale} />
             </Route>
-            <Route path="/text">
+            <Route path={'/text'}>
               <Text locale={locale} />
             </Route>
           </Switch>
