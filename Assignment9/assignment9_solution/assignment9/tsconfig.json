@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "jsx": "preserve",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "noEmit": true
+    }
+}

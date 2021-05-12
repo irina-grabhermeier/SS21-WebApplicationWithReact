@@ -1,0 +1,28 @@
+{
+    "scripts": {
+        "watch": "webpack --mode development -w",
+        "build": "webpack --mode production",
+        "lint": "eslint . --ext tsx",
+        "typecheck": "tsc"
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.13.0",
+        "@babel/plugin-proposal-decorators": "^7.13.15",
+        "@babel/preset-react": "^7.13.13",
+        "@babel/preset-typescript": "^7.13.0",
+        "@types/react": "^17.0.4",
+        "@types/react-dom": "^17.0.3",
+        "@typescript-eslint/eslint-plugin": "^4.22.0",
+        "babel-loader": "^8.2.2",
+        "eslint": "^7.25.0",
+        "typescript": "^4.2.4",
+        "webpack": "^5.36.2",
+        "webpack-cli": "^4.6.0"
+    },
+    "dependencies": {
+        "mobx": "^6.3.0",
+        "mobx-react": "^7.1.0",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2"
+    }
+}
