@@ -1,0 +1,32 @@
+import styled from 'styled-components';
+
+const Container = styled.div`
+    display: flex;
+    justify-content:center;
+    background: lightGreen;
+`;
+
+const ListItem = styled.li`
+    background-color: pink;
+    list-style-type: none;
+    margin: 5pt;
+    padding:5pt;
+    border: solid 1px;
+    width: 200pt;
+    text-align: center;
+    font-size: 32px;
+`;
+
+const DataPresenter = (props: { data: string[] }) => {
+
+
+    return (
+        <Container>
+            <ul>
+                {props.data.map((item) => <ListItem key={item}>{item}</ListItem>)}
+            </ul>
+        </Container>
+    );
+}
+
+export default DataPresenter;
