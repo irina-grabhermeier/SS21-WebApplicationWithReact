@@ -1,12 +1,11 @@
 import { shallow } from "enzyme";
 import DataPresenter from "../components/DataPresenter";
 
-test('List has correct item count', () => {
-    const data = ['Random string #0', 'Random string #1', 'Random string #2', 'Random string #3'];
-    const dataPresenter = shallow(<DataPresenter data={data} />);
+test('Data is correct', () => {
+    const testData = ['Data 0', 'Data 1', 'Data 2', 'Data 3'];
+    const wrapper = shallow(<DataPresenter data={testData} />);
 
-    expect(dataPresenter.children()).toHaveLength(data.length);
-    for (let i = 0; i < data.length; i++) {
-        expect(dataPresenter.find(`#item-${i}`).text()).toBe(`Random string #${i}`);
-    }
+    expect(wrapper.find('ul').children()).toHaveLength(testData.length);
+
+
 });

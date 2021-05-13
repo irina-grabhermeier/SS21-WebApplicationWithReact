@@ -17,13 +17,17 @@ const ListItem = styled.li`
     font-size: 32px;
 `;
 
-const DataPresenter = (props: { data: string[] }) => {
+interface DataPresenterProps {
+    data: string[];
+}
+
+const DataPresenter = (props: DataPresenterProps) => {
 
 
     return (
         <Container>
             <ul>
-                {props.data.map((item) => <ListItem key={item}>{item}</ListItem>)}
+                {props.data.map((item) => <ListItem id={item} key={item}>{item}</ListItem>)}
             </ul>
         </Container>
     );
