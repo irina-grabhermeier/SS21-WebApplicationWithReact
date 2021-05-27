@@ -1,9 +1,0 @@
-{
-  "short_name": "Assignment 11",
-  "name": "Assignment 11 using d3",
-  "icons": [],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
-}
